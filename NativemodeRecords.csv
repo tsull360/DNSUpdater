@@ -1,14 +1,1 @@
 Record,Type,TTL,Data,UserName,Password
-mdm,A,3600,public,Wl4e65HdIbq3Q9Gh,eM1GMzrcEqdlihbA
-vpn,A,3600,public,WLXGIkhO27BjwwZc,9mDCxZKP083iMGjh
-rdgateway,A,3600,public,WTlM1Muykpho1ptJ,cwVJnc3rUzSihzU5
-subsonic,A,3600,public,gqOTlFlhq4IEEKoc,0UWdLYU9ptFR6pEM
-guac,A,3600,public,X8N4dHwHwwxmx6Wo,PvADZr6w2DJ4LCIA
-sts,A,3600,public,JEXR30iY2zj9M8tA,6it83bTLw9abIZQj
-ocsp,A,3600,public,uFONqBCMF1XrRRLS,TZhzzcHFvMrElXOQ
-crl,A,3600,public,Pl1uWMyvCfDe6G4N,GFoQ3L5c4rTsUTlR
-portal,A,3600,192.168.88.100,portuser,portpass
-emby,A,3600,public,rk1jl7v441ioQOUs,eHICFCR2boVdd3IQ
-test,A,3600,public,RGnZfDc4Bon6dGby,Ve02KJQvLTtxZtpw
-remote,A,3600,public,5nVb3R1EnwG21b5B,YazVunpCBGxTJyeP
-iris,A,3600,public,hxfyGlPhzZlNbzuG,3KLNUdpmARGw7okg
