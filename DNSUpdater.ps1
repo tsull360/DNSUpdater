@@ -62,7 +62,6 @@
 Param
 (
 [String]$ZoneName = "nativemode.com",
-#[String]$RecordFile = "C:\Users\tim\OneDrive\Tech\PowerShell\DNSUpdate\NativemodeRecords.csv",
 [String]$RecordFile = ".\NativemodeRecords.csv",
 [Boolean]$Mail,
 [String]$MailFrom,
@@ -74,8 +73,8 @@ Write-Host "Supplied Values"
 Write-Host "Zone: "$Zonename
 Write-Host "Record File: "$RecordFile
 
-$UpdateResults = @()
-$TestResults = @()
+$Script:UpdateResults = @()
+$Script:TestResults = @()
 
 #This function queries a public resource to return the external IP address at the current
 #location.
@@ -138,11 +137,12 @@ Function Update-Record ($RecordName, $RecordUserName, $RecordPassword, $RecordRe
         "911*" {Write-Warning "An error happened on our end. Wait 5 minutes and retry." $Result = "Retry in 5 Mintues"}
         }
         
-        $UpdateResults += "Record: $RecordName.$ZoneName Value: $RecordToSet Result: $Result"
+        $UpdateResults += "Record: $RecordName.$ZoneName Value: $RecordToSet Result: $Result`n"
     }
     catch 
     {
         Write-Host "Error updating record. Error:" $_.Exception.Message
+        $UpdateResults += "Record: $RecordName.$ZoneName Result: $($_.Exception.Message)`n"
     }
 
 }
@@ -218,6 +218,7 @@ try {
             Write-Host "Record to set value: $RecordToSet"
             Write-Host "Current value: $QueryResult"
             $Update = $false
+            $UpdateResults += "Record: $RecordName.$ZoneName Status: No update required`n"
 
         }
         else 
@@ -241,6 +242,9 @@ catch {
     Write-Host "Error getting data file. Error: "$_.Exception.Message
 }
 
+Write-Host "Test $TestResults"
+Write-Host "Update $UpdateResults"
+
 If ($Mail -eq $true)
 {
 $MessageBody = @"
@@ -252,10 +256,10 @@ Zone Name: $ZoneName
 Record File: $RecordFile
 
 Record Test Status
-$TestStatus
+$TestResults
 
 Record Update Status
-$UpdateStatus
+$UpdateResults
 
 End of DNS Update Script
 
