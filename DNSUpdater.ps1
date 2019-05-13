@@ -61,8 +61,8 @@
 
 Param
 (
-[String]$ZoneName = "nativemode.com",
-[String]$RecordFile = ".\NativemodeRecords.csv",
+[String]$ZoneName = "contoso.com",
+[String]$RecordFile = ".\Records.csv",
 [Boolean]$Mail,
 [String]$MailFrom,
 [String]$MailTo,
