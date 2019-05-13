@@ -156,7 +156,7 @@ Function Write-Work ($MessageBody)
         [System.Diagnostics.EventLog]::CreateEventSource("DNSManager","Application")
     }
 
-    Write-EventLog -LogName "Application" -EntryType $EventType -EventId $EventID -Source DNSManager -Message $MessageBody
+    Write-EventLog -LogName "Application" -EntryType "Information" -EventId 1024 -Source DNSManager -Message $MessageBody
 
 }
 
@@ -242,7 +242,6 @@ catch {
     Write-Host "Error getting data file. Error: "$_.Exception.Message
 }
 
-Write-Host "Test $TestResults"
 Write-Host "Update $UpdateResults"
 
 If ($Mail -eq $true)
@@ -254,9 +253,6 @@ Version: 1.1
 Supplied Values
 Zone Name: $ZoneName
 Record File: $RecordFile
-
-Record Test Status
-$TestResults
 
 Record Update Status
 $UpdateResults
