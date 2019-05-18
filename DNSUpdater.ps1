@@ -44,9 +44,9 @@
 
 .NOTES
 
-    Author: Tim Sullivan
+    Author: tsull360
     Version: 1.0
-    Date: 27/12/2016
+    Date: 01/02/2019
     Name: DNSUpdater.ps1
 
 .EXAMPLE
