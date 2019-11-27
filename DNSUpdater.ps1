@@ -44,9 +44,9 @@
 
 .NOTES
 
-    Author: tsull360
+    Author: Tim Sullivan
     Version: 1.0
-    Date: 01/02/2019
+    Date: 27/12/2016
     Name: DNSUpdater.ps1
 
 .EXAMPLE
@@ -61,8 +61,8 @@
 
 Param
 (
-[String]$ZoneName = "contoso.com",
-[String]$RecordFile = ".\Records.csv",
+[String]$ZoneName,
+[String]$RecordFile,
 [Boolean]$Mail,
 [String]$MailFrom,
 [String]$MailTo,
@@ -73,7 +73,7 @@ Write-Host "Supplied Values"
 Write-Host "Zone: "$Zonename
 Write-Host "Record File: "$RecordFile
 
-$Script:UpdateResults = @()
+$Global:UpdateResults = @()
 $Script:TestResults = @()
 
 #This function queries a public resource to return the external IP address at the current
@@ -97,7 +97,9 @@ Function Get-Record($QueryRecord)
 {
     try 
     {
-        $Script:QueryResult = (Resolve-DnsName -Server 8.8.8.8 -Name $QueryRecord).IPAddress
+        $QueryHolder = Resolve-DNSName -Server 8.8.8.8 -Type A -Name $QueryRecord | Select-Object IPAddress
+        $Script:QueryResult = $QueryHolder.IPAddress
+        #$Script:QueryResult = (Resolve-DnsName -Server 8.8.8.8 -Name $QueryRecord).IPAddress
         
     }
     catch 
@@ -119,7 +121,8 @@ Function Update-Record ($RecordName, $RecordUserName, $RecordPassword, $RecordRe
     $headers = @{ Authorization =  $basicAuthValue }
 
     $url = "https://domains.google.com/nic/update?hostname=$RecordName.$ZoneName&myip=$RecordToSet"
-    Write-Host "URL being used: $URL"
+    Write-Host "Craftted Update URL being used: $URL"
+    Write-Host "Header Information: "($Headers | Out-String)
     try 
     {
         Write-Host "Updating record..."
@@ -135,14 +138,16 @@ Function Update-Record ($RecordName, $RecordUserName, $RecordPassword, $RecordRe
         "badagent*" {Write-Warning "Your Dynamic DNS client is making bad requests. Ensure the user agent is set in the request, and that you are only attempting to set an IPv4 address. IPv6 is not supported." $Result = "Bad Request"}
         "abuse*" {Write-Warning "Dynamic DNS access for the hostname has been blocked due to failure to interpret previous responses correctly." $Result = "Blocked"}
         "911*" {Write-Warning "An error happened on our end. Wait 5 minutes and retry." $Result = "Retry in 5 Mintues"}
+        default {Write-Warning "An unresolved error has occured." $Result = "Unresolved error occured!"}
         }
         
         $UpdateResults += "Record: $RecordName.$ZoneName Value: $RecordToSet Result: $Result`n"
     }
     catch 
     {
+        $UpdateResults += "Record Update Error: $RecordName.$ZoneName"+$_.Exception.Message+"`n"
         Write-Host "Error updating record. Error:" $_.Exception.Message
-        $UpdateResults += "Record: $RecordName.$ZoneName Result: $($_.Exception.Message)`n"
+
     }
 
 }
@@ -242,7 +247,7 @@ catch {
     Write-Host "Error getting data file. Error: "$_.Exception.Message
 }
 
-Write-Host "Update $UpdateResults"
+Write-Host "Update Results: `n $UpdateResults"
 
 If ($Mail -eq $true)
 {
