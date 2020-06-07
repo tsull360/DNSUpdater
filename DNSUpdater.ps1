@@ -247,7 +247,7 @@ catch {
     Write-Host "Error getting data file. Error: "$_.Exception.Message
 }
 
-Write-Host "Update Results: `n $UpdateResults"
+Write-Host "Update Results: `n$UpdateResults"
 
 If ($Mail -eq $true)
 {
