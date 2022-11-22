@@ -141,11 +141,11 @@ Function Update-Record ($RecordName, $RecordUserName, $RecordPassword, $RecordRe
         default {Write-Warning "An unresolved error has occured." $Result = "Unresolved error occured!"}
         }
         
-        $UpdateResults += "Record: $RecordName.$ZoneName Value: $RecordToSet Result: $Result`n"
+        $UpdateResults += "Record: $($RecordName.$ZoneName) Value: $RecordToSet Result: $Result`n"
     }
     catch 
     {
-        $UpdateResults += "Record Update Error: $RecordName.$ZoneName"+$_.Exception.Message+"`n"
+        $UpdateResults += "Record Update Error: $($RecordName.$ZoneName)"+$_.Exception.Message+"`n"
         Write-Host "Error updating record. Error:" $_.Exception.Message
 
     }
